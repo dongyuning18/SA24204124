@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Yuning Dong" />
+
+<meta name="date" content="2024-12-06" />
+
+<title>Introduction to functions</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to functions</h1>
+<h4 class="author">Yuning Dong</h4>
+<h4 class="date">2024-12-06</h4>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>在SA24204124-package包中，包含了两个函数。其中，Risk.R文件中的predict_stock_market_risk函数为基于滑动窗口的股票风险预测。Outlier.cpp文件中的rangeAnomalyDetection函数为基于范围的异常值检测。下面对这两个函数的功能做简要介绍并通过示例说明。</p>
+</div>
+<div id="基于滑动窗口的股票风险预测" class="section level2">
+<h2>基于滑动窗口的股票风险预测</h2>
+<p>The source R code for <em>predict_stock_market_risk</em> is as
+follows:</p>
+<p>输入参数：股票收益率、影响因素1、影响因素2、影响因素3，滑动窗口大小默认为80。
+对于每一次滑动窗口，将当前窗口的收益率标准差作为风险波动。做多元线性回归，将回归系数的加权和作为股市风险。
+输出：股市风险预测值及其统计信息（均值、方差、极值），预测长度为n-window_size+1.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>predict_stock_market_risk <span class="ot">&lt;-</span> <span class="cf">function</span>(stock_returns, x1, x2, x3, <span class="at">window_size =</span> <span class="dv">80</span>) {</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(stock_returns)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="co">#检查输入的参数长度是否一致</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">!=</span> <span class="fu">length</span>(x1) <span class="sc">||</span> n <span class="sc">!=</span> <span class="fu">length</span>(x2) <span class="sc">||</span> n <span class="sc">!=</span> <span class="fu">length</span>(x3)) {</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;All input data vectors must have the same length.&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  }</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>  </span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>  <span class="co"># 检查窗口大小是否合法</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>  <span class="cf">if</span> (window_size <span class="sc">&lt;=</span> <span class="dv">0</span> <span class="sc">||</span> window_size <span class="sc">&gt;</span> n) {</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Window size must be a positive integer and smaller than or equal to the length of the data.&quot;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>  }</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>  </span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="co">#存储风险预测结果</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  risk_predictions <span class="ot">&lt;-</span> <span class="fu">numeric</span>(n <span class="sc">-</span> window_size <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  </span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> window_size <span class="sc">+</span> <span class="dv">1</span>)) {</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>    <span class="co"># 提取当前窗口的数据</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>    current_window_stock_returns <span class="ot">&lt;-</span> stock_returns[i<span class="sc">:</span>(i <span class="sc">+</span> window_size <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>    current_window1 <span class="ot">&lt;-</span> x1[i<span class="sc">:</span>(i <span class="sc">+</span> window_size <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    current_window2 <span class="ot">&lt;-</span> x2[i<span class="sc">:</span>(i <span class="sc">+</span> window_size <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>    current_window3 <span class="ot">&lt;-</span> x3[i<span class="sc">:</span>(i <span class="sc">+</span> window_size <span class="sc">-</span> <span class="dv">1</span>)]</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>    </span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>    <span class="co"># 检查窗口内是否包含NA值</span></span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(current_window_stock_returns)) <span class="sc">||</span> <span class="fu">any</span>(<span class="fu">is.na</span>(current_window1)) <span class="sc">||</span> </span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>        <span class="fu">any</span>(<span class="fu">is.na</span>(current_window2)) <span class="sc">||</span> <span class="fu">any</span>(<span class="fu">is.na</span>(current_window3))) {</span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a>      risk_predictions[i] <span class="ot">&lt;-</span> <span class="cn">NA</span>  <span class="co"># 如果窗口内有NA值，设置风险为NA</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a>      <span class="cf">next</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a>    }</span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a>    </span>
+<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a>    <span class="co"># 计算当前窗口股市收益率的标准差作为风险</span></span>
+<span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a>    current_risk <span class="ot">&lt;-</span> <span class="fu">sd</span>(current_window_stock_returns)</span>
+<span id="cb1-33"><a href="#cb1-33" tabindex="-1"></a>    </span>
+<span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a>    <span class="co"># 将经济因素（x1, x2, x3）合并成一个数据框</span></span>
+<span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">current_risk =</span> <span class="fu">rep</span>(current_risk, <span class="fu">length</span>(current_window1)), <span class="at">x1 =</span> current_window1, <span class="at">x2 =</span> current_window2, <span class="at">x3 =</span> current_window3)</span>
+<span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a>  </span>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a>    </span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a>    <span class="co"># 多元线性回归：股市风险 ~ GDP + 通货膨胀率 + 失业率</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a>    model <span class="ot">&lt;-</span> <span class="fu">lm</span>(current_risk <span class="sc">~</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3, <span class="at">data =</span> data)</span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a>    </span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a>    <span class="co"># 提取回归模型的系数</span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a>    coefficients <span class="ot">&lt;-</span> <span class="fu">coef</span>(model)</span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a>    </span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a>    <span class="co"># 计算回归模型的预测值（即股市风险）</span></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a>    predicted_risk <span class="ot">&lt;-</span> <span class="fu">sum</span>(coefficients[<span class="sc">-</span><span class="dv">1</span>] <span class="sc">*</span> <span class="fu">c</span>(<span class="fu">mean</span>(current_window1), <span class="fu">mean</span>(current_window2), <span class="fu">mean</span>(current_window3))) <span class="sc">+</span> coefficients[<span class="dv">1</span>]</span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a>    </span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a>    <span class="co"># 存储预测的风险值</span></span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a>    risk_predictions[i] <span class="ot">&lt;-</span> predicted_risk</span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a>  }</span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a>  </span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a>  <span class="co"># 输出预测结果和统计信息</span></span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a>    <span class="at">risk_predictions =</span> risk_predictions,</span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a>    <span class="at">mean_risk =</span> <span class="fu">mean</span>(risk_predictions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a>    <span class="at">sd_risk =</span> <span class="fu">sd</span>(risk_predictions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a>    <span class="at">min_risk =</span> <span class="fu">min</span>(risk_predictions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a>    <span class="at">max_risk =</span> <span class="fu">max</span>(risk_predictions, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a>  )</span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a>  </span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a>}</span></code></pre></div>
+<p>用随机数作为简单的示例代码：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># 示例数据生成</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(SA24204124)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># 设置随机种子确保可重复性</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>stock_returns <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)  <span class="co"># 模拟100个股市收益率</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>gdp_growth <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)  <span class="co"># 模拟100个GDP增长率</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>inflation_rate <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)  <span class="co"># 模拟100个通货膨胀率</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>unemployment_rate <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)  <span class="co"># 模拟100个失业率</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co"># 调用函数进行风险预测</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">predict_stock_market_risk</span>(stock_returns, gdp_growth, inflation_rate, unemployment_rate, <span class="at">window_size =</span> <span class="dv">80</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co"># 查看结果</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;风险预测结果：&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;风险预测结果：&quot;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">print</span>(result<span class="sc">$</span>risk_predictions)  <span class="co"># 每个窗口的风险预测</span></span></code></pre></div>
+<pre><code>##   [1] 0.9237131 0.9213813 0.9217819 0.9064981 0.9092503 0.9095448 0.8897040
+##   [8] 0.8967289 0.8863749 0.8836221 0.8907313 0.8872473 0.8883410 0.8877122
+##  [15] 0.8908712 0.9004370 0.8818884 0.9128847 0.8986360 0.8967538 0.9032220
+##  [22] 0.8983554 0.8979165 0.8898690 0.8863994 0.8905349 0.8674958 0.8694439
+##  [29] 0.8915577 0.8824744 0.8776435 0.8797991 0.8808656 0.8961043 0.8912298
+##  [36] 0.8884981 0.8859317 0.8839803 0.8870444 0.8916094 0.8980458 0.8946711
+##  [43] 0.9007590 0.8910781 0.8573543 0.8717028 0.8656661 0.8648964 0.8632974
+##  [50] 0.8655812 0.8655697 0.8803151 0.8817340 0.8817218 0.8694365 0.8986259
+##  [57] 0.8912077 0.8893724 0.8909196 0.9169820 0.9303732 0.9328871 0.9317390
+##  [64] 0.9470367 0.9550883 0.9640545 0.9646192 0.9752746 0.9790392 1.0029176
+##  [71] 0.9828815 0.9870006 0.9591708 0.9526690 0.9558148 0.9532565 0.9455670
+##  [78] 0.9479587 0.9395931 0.9463238 0.9469832 0.9549501 0.9603931 0.9692159
+##  [85] 1.0345497 1.0352341 1.0350904 1.0299841 1.0297292 1.0312077 1.0234646
+##  [92] 1.0167376 1.0144688 1.0138661 1.0413489 1.0319877 1.0367005 1.0047008
+##  [99] 0.9887070 0.9905364 0.9858955 0.9894399 1.0004401 1.0007066 1.0040369
+## [106] 0.9995375 0.9995924 1.0054364 0.9891379 0.9924394 0.9878604 0.9865051
+## [113] 0.9842389 0.9682739 0.9730738 0.9811783 1.0071762 1.0096258 1.0165243
+## [120] 1.0144835 1.0166177</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;预测统计信息：&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;预测统计信息：&quot;</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">print</span>(result<span class="sc">$</span>mean_risk)  <span class="co"># 风险的均值</span></span></code></pre></div>
+<pre><code>## [1] 0.9389947</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">print</span>(result<span class="sc">$</span>sd_risk)    <span class="co"># 风险的标准差</span></span></code></pre></div>
+<pre><code>## [1] 0.05503247</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">print</span>(result<span class="sc">$</span>min_risk)   <span class="co"># 风险的最小值</span></span></code></pre></div>
+<pre><code>## [1] 0.8573543</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">print</span>(result<span class="sc">$</span>max_risk)   <span class="co"># 风险的最大值</span></span></code></pre></div>
+<pre><code>## [1] 1.041349</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># 查看结果</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">plot</span>(result<span class="sc">$</span>risk_predictions, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Predicted Stock Market Risk&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Risk Value&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Time&quot;</span>)</span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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" /><!-- --></p>
+<p>用data数据集作为实例，测试函数功能。在data数据集中，收集了2000年-2023年标普500指数的年收益率和中国人均GDP增速，通货膨胀率和年度失业率。</p>
+<p>其中，标普500指数的年收益率(SP_Return)数据来源于yahho（<a href="https://finance.yahoo.com/quote/%5EGSPC/" class="uri">https://finance.yahoo.com/quote/%5EGSPC/</a>）。
+计算公式：年度收益率=（年末收盘价-年初收盘价）/年初收盘价。</p>
+<p>中国人均GDP增速、通货膨胀率和年度失业率均来自世界银行数据库，网站：<a href="https://data.worldbank.org/" class="uri">https://data.worldbank.org/</a>。</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">data</span>(data)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>Year <span class="ot">=</span> data<span class="sc">$</span>Year; SP_Return <span class="ot">=</span> data<span class="sc">$</span>SP_Return; GDP <span class="ot">=</span> data<span class="sc">$</span>GDP; Inflation <span class="ot">=</span> data<span class="sc">$</span>Inflation; Unemployment <span class="ot">=</span> data<span class="sc">$</span>Unemployment</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="fu">plot</span>(Year, SP_Return, <span class="at">col =</span> <span class="st">&#39;blue&#39;</span>, <span class="at">type =</span> <span class="st">&#39;l&#39;</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="st">&#39;data&#39;</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">15</span>))</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="fu">lines</span>(Year, GDP, <span class="at">col =</span> <span class="st">&#39;red&#39;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="fu">lines</span>(Year, Inflation, <span class="at">col =</span> <span class="st">&#39;green&#39;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="fu">lines</span>(Year, Unemployment, <span class="at">col =</span> <span class="st">&#39;yellow&#39;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;SP500 yearly return&quot;</span>, <span class="st">&quot;GDP growth&quot;</span>, <span class="st">&quot;Inflation&quot;</span>, <span class="st">&quot;Unemployment rate&quot;</span>),</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;yellow&quot;</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img role="img" src="data:image/png;base64,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" /><!-- --></p>
+<p>用Risk.R文件中的 <em>predict_stock_market_risk</em>
+预测2024-2038这15年间的标普500对于中国的股市风险。</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">data</span>(data)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>SP_Return <span class="ot">=</span> data<span class="sc">$</span>SP_Return; GDP <span class="ot">=</span> data<span class="sc">$</span>GDP; Inflation <span class="ot">=</span> data<span class="sc">$</span>Inflation; Unemployment <span class="ot">=</span> data<span class="sc">$</span>Unemployment</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="fu">predict_stock_market_risk</span>(SP_Return,GDP,Inflation,Unemployment,<span class="at">window_size=</span><span class="dv">10</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>r1 <span class="ot">=</span> <span class="fu">predict_stock_market_risk</span>(SP_Return,GDP,Inflation,Unemployment,<span class="at">window_size=</span><span class="dv">10</span>)<span class="sc">$</span>risk_predictions</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">seq</span>(<span class="dv">2024</span>,<span class="dv">2038</span>),r1,<span class="at">ylab =</span> <span class="st">&#39;Stock Risk Value&#39;</span>,<span class="at">type =</span> <span class="st">&#39;l&#39;</span>)</span></code></pre></div>
+</div>
+<div id="基于范围的异常值处理" class="section level2">
+<h2>基于范围的异常值处理</h2>
+<p>The source R code for <em>rangeAnomalyDetection</em> in Outlier.cpp
+is as follows:</p>
+<p>输入参数：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>List <span class="fu">rangeAnomalyDetection</span>(DataFrame df, Nullable<span class="sc">&lt;</span>List<span class="sc">&gt;</span> <span class="at">value_ranges =</span> R_NilValue) {</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  </span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 创建一个空的列表来存储异常值</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  List anomalies;</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  </span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 如果没有提供范围，自动基于 IQR 计算范围</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">value_ranges.isNull</span>()) {</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>    List ranges;</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>    </span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>    <span class="sc">/</span><span class="er">/</span> 获取 quantile 函数</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>    Function <span class="fu">quantile</span>(<span class="st">&quot;quantile&quot;</span>);</span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>    </span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>    <span class="cf">for</span> (int <span class="at">i =</span> <span class="dv">0</span>; i <span class="sc">&lt;</span> <span class="fu">df.size</span>(); i<span class="sc">++</span>) {</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>      CharacterVector colnames <span class="ot">=</span> <span class="fu">df.names</span>();</span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>      String colname <span class="ot">=</span> colnames[i];</span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>      NumericVector column <span class="ot">=</span> df[colname];</span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a>      </span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">Rf_isNumeric</span>(column)) {</span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a>        <span class="sc">/</span><span class="er">/</span> 调用 R 中的 quantile 函数计算 Q1 和 Q3</span>
+<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a>        NumericVector Q1 <span class="ot">=</span> <span class="fu">quantile</span>(column, <span class="fl">0.25</span>);</span>
+<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a>        NumericVector Q3 <span class="ot">=</span> <span class="fu">quantile</span>(column, <span class="fl">0.75</span>);</span>
+<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a>        double IQR <span class="ot">=</span> Q3[<span class="dv">0</span>] <span class="sc">-</span> Q1[<span class="dv">0</span>];</span>
+<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a>        </span>
+<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a>        double lower_bound <span class="ot">=</span> Q1[<span class="dv">0</span>] <span class="sc">-</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR;</span>
+<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a>        double upper_bound <span class="ot">=</span> Q3[<span class="dv">0</span>] <span class="sc">+</span> <span class="fl">1.5</span> <span class="sc">*</span> IQR;</span>
+<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a>        </span>
+<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a>        NumericVector range <span class="ot">=</span> NumericVector<span class="sc">::</span><span class="fu">create</span>(lower_bound, upper_bound);</span>
+<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a>        <span class="fu">ranges.push_back</span>(range, colname);</span>
+<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a>      }</span>
+<span id="cb19-30"><a href="#cb19-30" tabindex="-1"></a>    }</span>
+<span id="cb19-31"><a href="#cb19-31" tabindex="-1"></a>    </span>
+<span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a>    <span class="sc">/</span><span class="er">/</span> 设置范围值</span>
+<span id="cb19-33"><a href="#cb19-33" tabindex="-1"></a>    value_ranges <span class="ot">=</span> <span class="fu">wrap</span>(ranges);</span>
+<span id="cb19-34"><a href="#cb19-34" tabindex="-1"></a>  }</span>
+<span id="cb19-35"><a href="#cb19-35" tabindex="-1"></a>  </span>
+<span id="cb19-36"><a href="#cb19-36" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 获取列名</span>
+<span id="cb19-37"><a href="#cb19-37" tabindex="-1"></a>  CharacterVector colnames <span class="ot">=</span> <span class="fu">df.names</span>();</span>
+<span id="cb19-38"><a href="#cb19-38" tabindex="-1"></a>  </span>
+<span id="cb19-39"><a href="#cb19-39" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 存储剔除异常值后的数据框</span>
+<span id="cb19-40"><a href="#cb19-40" tabindex="-1"></a>  DataFrame cleaned_df <span class="ot">=</span> df;</span>
+<span id="cb19-41"><a href="#cb19-41" tabindex="-1"></a>  </span>
+<span id="cb19-42"><a href="#cb19-42" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 存储异常值的索引</span>
+<span id="cb19-43"><a href="#cb19-43" tabindex="-1"></a>  List <span class="fu">anomalies_list</span>(<span class="fu">df.size</span>());</span>
+<span id="cb19-44"><a href="#cb19-44" tabindex="-1"></a>  </span>
+<span id="cb19-45"><a href="#cb19-45" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 标记超出范围的异常值</span>
+<span id="cb19-46"><a href="#cb19-46" tabindex="-1"></a>  LogicalVector <span class="fu">rows_to_keep</span>(<span class="fu">df.nrows</span>(), true); <span class="sc">/</span><span class="er">/</span> 标记哪些行需要保留（初始为保留所有行）</span>
+<span id="cb19-47"><a href="#cb19-47" tabindex="-1"></a>  <span class="cf">for</span> (int <span class="at">i =</span> <span class="dv">0</span>; i <span class="sc">&lt;</span> <span class="fu">df.size</span>(); i<span class="sc">++</span>) {</span>
+<span id="cb19-48"><a href="#cb19-48" tabindex="-1"></a>    String colname <span class="ot">=</span> colnames[i];</span>
+<span id="cb19-49"><a href="#cb19-49" tabindex="-1"></a>    NumericVector column <span class="ot">=</span> df[colname];</span>
+<span id="cb19-50"><a href="#cb19-50" tabindex="-1"></a>    </span>
+<span id="cb19-51"><a href="#cb19-51" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">Rf_isNumeric</span>(column)) {</span>
+<span id="cb19-52"><a href="#cb19-52" tabindex="-1"></a>      <span class="sc">/</span><span class="er">/</span> 使用 <span class="fu">get</span>() 解包 value_ranges，获取列表</span>
+<span id="cb19-53"><a href="#cb19-53" tabindex="-1"></a>      List unwrapped_value_ranges <span class="ot">=</span> as<span class="sc">&lt;</span>List<span class="sc">&gt;</span>(value_ranges);</span>
+<span id="cb19-54"><a href="#cb19-54" tabindex="-1"></a>      <span class="sc">/</span><span class="er">/</span> 获取指定列的范围</span>
+<span id="cb19-55"><a href="#cb19-55" tabindex="-1"></a>      NumericVector range <span class="ot">=</span> unwrapped_value_ranges[colname];</span>
+<span id="cb19-56"><a href="#cb19-56" tabindex="-1"></a>      double lower_bound <span class="ot">=</span> range[<span class="dv">0</span>];</span>
+<span id="cb19-57"><a href="#cb19-57" tabindex="-1"></a>      double upper_bound <span class="ot">=</span> range[<span class="dv">1</span>];</span>
+<span id="cb19-58"><a href="#cb19-58" tabindex="-1"></a>      </span>
+<span id="cb19-59"><a href="#cb19-59" tabindex="-1"></a>      <span class="sc">/</span><span class="er">/</span> 使用 Rcpp<span class="sc">::</span><span class="fu">which</span>() 查找超出范围的异常值</span>
+<span id="cb19-60"><a href="#cb19-60" tabindex="-1"></a>      IntegerVector outlier_indices;</span>
+<span id="cb19-61"><a href="#cb19-61" tabindex="-1"></a>      <span class="cf">for</span> (int <span class="at">j =</span> <span class="dv">0</span>; j <span class="sc">&lt;</span> <span class="fu">column.size</span>(); j<span class="sc">++</span>) {</span>
+<span id="cb19-62"><a href="#cb19-62" tabindex="-1"></a>        <span class="cf">if</span> (column[j] <span class="sc">&lt;</span> lower_bound <span class="sc">||</span> column[j] <span class="sc">&gt;</span> upper_bound) {</span>
+<span id="cb19-63"><a href="#cb19-63" tabindex="-1"></a>          <span class="fu">outlier_indices.push_back</span>(j <span class="sc">+</span> <span class="dv">1</span>);  <span class="sc">/</span><span class="er">/</span> 索引从 <span class="dv">1</span> 开始</span>
+<span id="cb19-64"><a href="#cb19-64" tabindex="-1"></a>          rows_to_keep[j] <span class="ot">=</span> false; <span class="sc">/</span><span class="er">/</span> 标记为不保留</span>
+<span id="cb19-65"><a href="#cb19-65" tabindex="-1"></a>        }</span>
+<span id="cb19-66"><a href="#cb19-66" tabindex="-1"></a>      }</span>
+<span id="cb19-67"><a href="#cb19-67" tabindex="-1"></a>      </span>
+<span id="cb19-68"><a href="#cb19-68" tabindex="-1"></a>      <span class="fu">anomalies.push_back</span>(outlier_indices, colname);</span>
+<span id="cb19-69"><a href="#cb19-69" tabindex="-1"></a>  </span>
+<span id="cb19-70"><a href="#cb19-70" tabindex="-1"></a>    }</span>
+<span id="cb19-71"><a href="#cb19-71" tabindex="-1"></a>  }</span>
+<span id="cb19-72"><a href="#cb19-72" tabindex="-1"></a>  </span>
+<span id="cb19-73"><a href="#cb19-73" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 使用 rows_to_keep 标记过滤出保留的行</span>
+<span id="cb19-74"><a href="#cb19-74" tabindex="-1"></a>  cleaned_df <span class="ot">=</span> cleaned_df[rows_to_keep];</span>
+<span id="cb19-75"><a href="#cb19-75" tabindex="-1"></a>  </span>
+<span id="cb19-76"><a href="#cb19-76" tabindex="-1"></a>  <span class="sc">/</span><span class="er">/</span> 返回包含异常值的记录和计算的范围</span>
+<span id="cb19-77"><a href="#cb19-77" tabindex="-1"></a>  return List<span class="sc">::</span><span class="fu">create</span>(<span class="fu">Named</span>(<span class="st">&quot;anomalies&quot;</span>) <span class="ot">=</span> anomalies, <span class="sc">/</span><span class="er">/</span>返回异常值的索引</span>
+<span id="cb19-78"><a href="#cb19-78" tabindex="-1"></a>                      <span class="fu">Named</span>(<span class="st">&quot;value_ranges&quot;</span>) <span class="ot">=</span> value_ranges, <span class="sc">/</span><span class="er">/</span>返回正常值范围</span>
+<span id="cb19-79"><a href="#cb19-79" tabindex="-1"></a>                      <span class="fu">Named</span>(<span class="st">&quot;cleaned_df&quot;</span>) <span class="ot">=</span> cleaned_df); <span class="sc">/</span><span class="er">/</span> 返回剔除异常值后的数据框</span>
+<span id="cb19-80"><a href="#cb19-80" tabindex="-1"></a>}</span></code></pre></div>
+<p>示例代码1：df数据集分别给出了6个温度和气压值。ranges数据集为存储两个向量的列表，分别代表温度和气压的正常范围，假设温度正常范围为[-50,50]，气压的正常范围为[980,1050]。</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">library</span>(SA24204124)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">100</span>, <span class="sc">-</span><span class="dv">60</span>, <span class="dv">15</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  <span class="at">pressure =</span> <span class="fu">c</span>(<span class="dv">1010</span>, <span class="dv">1020</span>, <span class="dv">1015</span>, <span class="dv">1030</span>, <span class="dv">1100</span>, <span class="dv">1005</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>)</span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co"># 指定合理的范围</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>ranges <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">50</span>),  <span class="co"># 温度应该在 -50 到 50 摄氏度之间</span></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>  <span class="at">pressure =</span> <span class="fu">c</span>(<span class="dv">980</span>, <span class="dv">1050</span>)  <span class="co"># 气压应该在 980 到 1050 毫巴之间</span></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a>)</span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="co"># 检测异常值</span></span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>r2 <span class="ot">=</span> <span class="fu">rangeAnomalyDetection</span>(df, <span class="at">value_ranges =</span> ranges)</span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a><span class="co"># 查看检测结果</span></span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a><span class="fu">print</span>(r2)</span></code></pre></div>
+<p>示例代码2：范围为默认参数（及四分位数）</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">library</span>(SA24204124)</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="co"># 生成两组随机数数据</span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>  <span class="at">d1 =</span> <span class="fu">runif</span>(<span class="dv">10</span>, <span class="sc">-</span><span class="dv">30</span>, <span class="dv">40</span>), <span class="co"># 温度数据，包含一个极端值</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>  <span class="at">d2 =</span> <span class="fu">runif</span>(<span class="dv">10</span>, <span class="dv">900</span>, <span class="dv">1100</span>)  <span class="co"># 气压数据，包含一个极端值</span></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a>)</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="co"># 打印数据框</span></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="fu">print</span>(df2)</span></code></pre></div>
+<pre><code>##            d1        d2
+## 1   14.743007 1011.4582
+## 2  -21.262432 1046.0786
+## 3  -12.131395  993.9717
+## 4   27.440228 1097.7220
+## 5   26.264628 1096.9337
+## 6  -26.791576  978.6569
+## 7   31.287221 1021.7694
+## 8  -21.039364  969.0967
+## 9   12.618198  987.4225
+## 10   2.869681  945.8264</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># 调用 rangeAnomalyDetection 函数，检测异常值（不提供 value_ranges 参数，使用默认 IQR 计算范围）</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>r22 <span class="ot">=</span> <span class="fu">rangeAnomalyDetection</span>(df2)</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="co"># 显示异常值</span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="fu">print</span>(r22)</span></code></pre></div>
+<pre><code>## $anomalies
+## $anomalies$d1
+## integer(0)
+## 
+## $anomalies$d2
+## integer(0)
+## 
+## 
+## $value_ranges
+## $value_ranges$d1
+## [1] -82.10726  86.67911
+## 
+## $value_ranges$d2
+## [1]  892.1189 1128.7307</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
