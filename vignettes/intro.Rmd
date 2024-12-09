@@ -153,7 +153,8 @@ plot(seq(2024,2038),r1,ylab = 'Stock Risk Value',type = 'l')
 
 The source R code for _rangeAnomalyDetection_ in Outlier.cpp is as follows:
 
-输入参数：
+输入参数：数据框和正常值范围。
+输出参数：异常值的索引和范围
 ```{r,eval=FALSE}
 List rangeAnomalyDetection(DataFrame df, Nullable<List> value_ranges = R_NilValue) {
   
@@ -186,54 +187,42 @@ List rangeAnomalyDetection(DataFrame df, Nullable<List> value_ranges = R_NilValu
       }
     }
     
-    // 设置范围值
+    // 将 ranges 转换为 Nullable 类型
     value_ranges = wrap(ranges);
   }
   
   // 获取列名
   CharacterVector colnames = df.names();
   
-  // 存储剔除异常值后的数据框
-  DataFrame cleaned_df = df;
-  
-  // 存储异常值的索引
-  List anomalies_list(df.size());
-  
   // 标记超出范围的异常值
-  LogicalVector rows_to_keep(df.nrows(), true); // 标记哪些行需要保留（初始为保留所有行）
   for (int i = 0; i < df.size(); i++) {
     String colname = colnames[i];
     NumericVector column = df[colname];
     
     if (Rf_isNumeric(column)) {
-      // 使用 get() 解包 value_ranges，获取列表
+      // 使用 as<List>() 解包 value_ranges，获取列表
       List unwrapped_value_ranges = as<List>(value_ranges);
+      
       // 获取指定列的范围
       NumericVector range = unwrapped_value_ranges[colname];
       double lower_bound = range[0];
       double upper_bound = range[1];
       
-      // 使用 Rcpp::which() 查找超出范围的异常值
+      // 手动实现 which()，找出异常值的索引
       IntegerVector outlier_indices;
       for (int j = 0; j < column.size(); j++) {
         if (column[j] < lower_bound || column[j] > upper_bound) {
           outlier_indices.push_back(j + 1);  // 索引从 1 开始
-          rows_to_keep[j] = false; // 标记为不保留
         }
       }
       
       anomalies.push_back(outlier_indices, colname);
-  
     }
   }
   
-  // 使用 rows_to_keep 标记过滤出保留的行
-  cleaned_df = cleaned_df[rows_to_keep];
-  
   // 返回包含异常值的记录和计算的范围
-  return List::create(Named("anomalies") = anomalies, //返回异常值的索引
-                      Named("value_ranges") = value_ranges, //返回正常值范围
-                      Named("cleaned_df") = cleaned_df); // 返回剔除异常值后的数据框
+  return List::create(Named("anomalies") = anomalies,
+                      Named("value_ranges") = value_ranges);
 }
 
 
